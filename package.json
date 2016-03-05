@@ -1,0 +1,11 @@
+{
+  "name": "peerfact",
+  "version": "0.0.1",
+  "description": "Check It before you Rep It!",
+  "author": "Sam MacPherson",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-zip": "^3.2.0"
+  }
+}

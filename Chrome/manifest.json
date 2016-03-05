@@ -1,0 +1,44 @@
+{
+	"manifest_version": 2,
+
+	"name": "PeerFact",
+	"description": "Check It before you Rep It!",
+	"version": "0.0.1",
+	"content_security_policy": "script-src 'self' https://cdn.firebase.com https://*.firebaseio.com https://d15m3c3cf3s94d.cloudfront.net; object-src 'self'",
+	
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	},
+
+	"web_accessible_resources": [
+		"PeerFactInjected.js",
+		"firebase.js",
+		"PeerFactCommunicator.js",
+		"jquery.js"
+	],
+	
+	"permissions": [
+		"*://auth.firebase.com/*"
+	],
+
+	"content_scripts": [
+		{
+			"matches": ["*://*.facebook.com/*"],
+			"css": ["PeerFact.css"],
+			"js": [
+				"jquery.js",
+				"promise.js",
+				"firebase.js",
+				"inject.js",
+				"url.js",
+				"PeerFactPost.js",
+				"PeerFactPostData.js",
+				"PeerFactSelectors.js",
+				"PeerFactCommunicator.js",
+				"PeerFact.js"
+			]
+		}
+	]
+}
