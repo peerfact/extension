@@ -28,6 +28,7 @@ function scriptsReady (func) {
 						var authData = null;
 						try {
 							authData = JSON.parse(window.localStorage.getItem("firebase:session::peerfact"));
+							if (authData.facebook.accessToken == null) authData = null;	//We need the access token to continue
 						} catch (e) {}
 						if (authData != null) {
 							clearInterval(intId);
