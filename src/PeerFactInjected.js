@@ -1,3 +1,5 @@
+if (window.location.pathname == "/robots.txt") document.documentElement.innerHTML = "Authenticating...";
+
 function scriptsReady (func) {
 	//Need all scripts to be available
 	var readyInt = setInterval(function () {
