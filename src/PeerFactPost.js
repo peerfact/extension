@@ -80,12 +80,14 @@ PeerFactPost.prototype.styleIt = function () {
 
 		if (authData != null) {
 			//Already authed -- send the data
-			self.data.updateMyVote(type, val);
-			self.updateData();
+			self.data.updateMyVote(type, val).then(function () {
+				self.updateData();
+			});
 		} else {
 			//Need to authenticate
 			self.data.doAuth().then(function () {
-				self.data.updateMyVote(type, val);
+				return self.data.updateMyVote(type, val);
+			}).then(function () {
 				self.updateData();
 			});
 		}

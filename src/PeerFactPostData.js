@@ -43,12 +43,22 @@ PeerFactPostData.prototype.getBestProof = function () {
 };
 
 PeerFactPostData.prototype.updateMyVote = function (type, proof) {
-	this.votes[authData.uid] = {
+	var newVote = {
 		type: type,
 		proof: proof
 	};
+	var self = this;
 	var ref = new Firebase(firebaseDirectHost + '/posts/' + this.postid + '/votes/' + authData.uid);
-	ref.set(this.votes[authData.uid]);
+	return new Promise(function (resolve, reject) {
+		ref.set(newVote, function (error) {
+			if (error) {
+				reject(error);
+			} else {
+				self.votes[authData.uid] = newVote;
+				resolve();
+			}
+		});
+	});
 };
 
 /**

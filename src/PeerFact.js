@@ -14,6 +14,7 @@ var backendErrors = 0;
 	//Check if we are still authed
 	var authRef = new Firebase(firebaseDirectHost);
 	authData = authRef.getAuth();
+	//authRef.unauth();
 
 	//Events from the injected script
 	PeerFactCommunicator.recv("content", function (type, data) {
