@@ -23,6 +23,7 @@ function scriptsReady (func) {
 				case "oauth":
 					//An oauth window is open -- keep checking for valid login
 					//Start polling for authentication every second, give up after 2 minutes
+					console.log("Injected script got oauth request. Waiting for oauth data...");
 					var tries = 0;
 					var intId = setInterval(function () {
 						var authData = null;
@@ -31,11 +32,13 @@ function scriptsReady (func) {
 							if (authData.facebook.accessToken == null) authData = null;	//We need the access token to continue
 						} catch (e) {}
 						if (authData != null) {
+							console.log("Got oauth token. Sending to content script...");
 							clearInterval(intId);
 
 							PeerFactCommunicator.send("content", "oauth", { authData:authData });
 						} else {
 							tries++;
+							console.log("Waiting...");
 
 							if (tries >= 120) {
 								clearInterval(intId);

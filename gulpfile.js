@@ -4,13 +4,13 @@ const watch = require('gulp-watch');
  
 gulp.task('default', () => {
 	return gulp.src(['src/*', 'lib/*', 'Chrome/*', 'assets/*'])
-		.pipe(zip('peerfact.zip'))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('dist/dev'));
 });
  
-gulp.task('dev', () => {
+gulp.task('prod', () => {
 	return gulp.src(['src/*', 'lib/*', 'Chrome/*', 'assets/*'])
-		.pipe(gulp.dest('dist/dev'));
+		.pipe(zip('peerfact.zip'))
+		.pipe(gulp.dest('dist'));
 });
  
 gulp.task('watch', () => {

@@ -23,7 +23,7 @@ PeerFactPost.prototype.updateData = function (data) {
 
 		//Update best detected proof
 		var bestProof = this.data.getBestProof();
-		if (bestProof != null) this.$bestProof.html('<p>Best Proof: <a target="_blank" href="' + PeerFactPostData.formatUrl(bestProof) + '">' + PeerFactPostData.formatUrl(bestProof) + '</a></p>');
+		if (bestProof != null) this.$bestProof.html('<p>Best Proof: <a target="_blank" href="' + PeerFactPostData.formatUrl(bestProof, summary.type) + '">' + PeerFactPostData.formatUrl(bestProof, summary.type) + '</a></p>');
 		else this.$bestProof.empty();
 	}
 };
@@ -85,6 +85,7 @@ PeerFactPost.prototype.styleIt = function () {
 			});
 		} else {
 			//Need to authenticate
+			console.log("Not authenticated. Popping up an auth window...");
 			self.data.doAuth().then(function () {
 				return self.data.updateMyVote(type, val);
 			}).then(function () {
@@ -94,7 +95,7 @@ PeerFactPost.prototype.styleIt = function () {
 		
 		//Send to the injected script
 		if (self.$commentCheckbox.prop("checked") && val) {
-			PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:PeerFactPostData.formatUrl(val) });
+			PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:PeerFactPostData.formatUrl(val, type) });
 		}
 	});
 

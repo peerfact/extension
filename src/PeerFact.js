@@ -21,8 +21,12 @@ var backendErrors = 0;
 		switch (type) {
 			case "oauth":
 				//Got oauth token credentials! -- set up firebase with credentials
+				console.log("Got oauth credentials in content script. Authenticating with the token...");
 				var authRef = new Firebase(firebaseDirectHost);
 				authRef.authWithOAuthToken("facebook", data.authData.facebook.accessToken, function(error, _authData) {
+					if (error) console.error("Got error from oauth. Error = ", error);
+					else console.log("Authenticated successfully.");
+
 					authData = _authData;
 				});
 

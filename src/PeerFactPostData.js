@@ -111,8 +111,9 @@ PeerFactPostData.fetch = function (postid) {
 /**
  * Make a PeerFact URL.
  */
-PeerFactPostData.formatUrl = function (url) {
-	return "http://www.peerfact.xyz/proof.html?url=" + encodeURIComponent(url);
+PeerFactPostData.formatUrl = function (url, type) {
+	if (type == null) type = "proof";
+	return "http://www.peerfact.xyz/" + type + ".html?url=" + encodeURIComponent(url);
 };
 
 /**

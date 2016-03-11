@@ -45,7 +45,8 @@ var PeerFactSelectors = {
 			if (href) {
 				var regexs = [
 					/\/videos\/([0-9]+)\//,
-					/\/photos\/[^\/]+\/([0-9]+)\//
+					/\/photos\/[^\/]+\/([0-9]+)\//,
+					/\/[^\/]+\/posts\/([0-9]+)/
 				];
 				for (var o = 0; o < regexs.length; o++) {
 					var matches = href.match(regexs[o]);
