@@ -95,7 +95,14 @@ PeerFactPost.prototype.styleIt = function () {
 		
 		//Send to the injected script
 		if (self.$commentCheckbox.prop("checked") && val) {
-			PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:PeerFactPostData.formatUrl(val, type) });
+			var commentText = "";
+			switch (type) {
+				case "fact": commentText = "Post marked as FACT by PeerFact. Link to proof: "; break;
+				case "misleading": commentText = "Post marked as MISLEADING by PeerFact. Link to explanation: "; break;
+				case "fiction": commentText = "Post marked as FICTION by PeerFact. Link to proof: "; break;
+			}
+
+			PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:commentText + PeerFactPostData.formatUrl(val, type) });
 		}
 	});
 
