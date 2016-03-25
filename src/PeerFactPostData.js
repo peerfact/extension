@@ -5,7 +5,7 @@ function PeerFactPostData (data) {
 }
 
 PeerFactPostData.prototype.getPostSummary = function () {
-	var summary = { votes: 0, fact: 0, fiction: 0, misleading: 0, type: null };
+	var summary = { votes: 0, fact: 0, fiction: 0, misleading: 0, sponsored: 0, type: null };
 	for (var i in this.votes) {
 		var vote = this.votes[i];
 

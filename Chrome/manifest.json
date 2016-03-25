@@ -3,7 +3,7 @@
 
 	"name": "PeerFact",
 	"description": "Check It before you Rep It!",
-	"version": "0.0.5",
+	"version": "0.1.0",
 	"content_security_policy": "script-src 'self' https://cdn.firebase.com https://*.firebaseio.com https://d15m3c3cf3s94d.cloudfront.net; object-src 'self'",
 	
 	"icons": {

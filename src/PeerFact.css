@@ -7,6 +7,9 @@
 .peerfact-misleading, .peerfact-misleading > * {
 	background: #FFF9AD !important;
 }
+.peerfact-sponsored, .peerfact-sponsored > * {
+	background: #FFCA7B !important;
+}
 
 .peerfact-box {
 	margin: 12px 12px -12px 12px;
@@ -46,6 +49,9 @@
 }
 .peerfact-btn-misleading  {
 	background: #FFF9AD;
+}
+.peerfact-btn-sponsored {
+	background: #FFCA7B;
 }
 .peerfact-checkbox {
 	display: block;
