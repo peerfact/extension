@@ -43,50 +43,36 @@ PeerFactPostData.prototype.getBestProof = function () {
 };
 
 PeerFactPostData.prototype.updateMyVote = function (type, proof) {
-	var newVote = {
-		type: type,
-		proof: proof
-	};
 	var self = this;
-	var ref = new Firebase(firebaseDirectHost + '/posts/' + this.postid + '/votes/' + authData.uid);
-	return new Promise(function (resolve, reject) {
-		ref.set(newVote, function (error) {
-			if (error) {
-				reject(error);
-			} else {
-				self.votes[authData.uid] = newVote;
-				resolve();
-			}
-		});
-	});
-};
-
-/**
- * Pop up a Facebook log in window for Firebase auth.
- */
-PeerFactPostData.prototype.doAuth = function () {
-	return new Promise (function (resolve, reject) {
-		window.open("https://www.facebook.com/robots.txt", 'oauth','height=600,width=450');
-
-		//Instruct the page to poll for oauth success
-		PeerFactCommunicator.send("facebook", "oauth", {});
-
-		//Start polling for authentication every second, give up after 2 minutes
-		var tries = 0;
-		var intId = setInterval(function () {
-			if (authData != null) {
-				clearInterval(intId);
-				resolve();
-			} else {
-				tries++;
-
-				if (tries >= 120) {
-					clearInterval(intId);
-					reject("Auth timed out.");
+	function doVote () {
+		var authData = PeerFactAuth.getAuthToken();
+		var newVote = {
+			type: type,
+			proof: proof,
+			uid: authData.uid
+		};
+		var ref = new Firebase(firebaseDirectHost + '/posts/' + self.postid + '/votes/' + authData.uid);
+		return new Promise(function (resolve, reject) {
+			ref.set(newVote, function (error) {
+				if (error) {
+					reject(error);
+				} else {
+					self.votes[authData.uid] = newVote;
+					resolve();
 				}
-			}
-		}, 1000);
-	});
+			});
+		});
+	}
+	if (PeerFactAuth.isAuth()) {
+		//Already authed -- send the data
+		return doVote();
+	} else {
+		//Need to authenticate
+		console.log("Not authenticated. Popping up an auth window...");
+		PeerFactAuth.doAuth().then(function () {
+			return doVote();
+		});
+	}
 };
 
 /**

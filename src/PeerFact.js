@@ -7,17 +7,16 @@ injectJs(chrome.extension.getURL('PeerFactInjected.js'));
 //Settings
 var firebaseDirectHost = "https://peerfact.firebaseio.com";
 var firebaseCDNHost = "https://d15m3c3cf3s94d.cloudfront.net";
-var authData = null;
 var backendErrors = 0;
 
 (function () {
 	//Check if we are still authed
-	var authRef = new Firebase(firebaseDirectHost);
-	authData = authRef.getAuth();
+	//var authRef = new Firebase(firebaseDirectHost);
+	//authData = PeerFactAuth.getAuthToken();
 	//authRef.unauth();
 
 	//Events from the injected script
-	PeerFactCommunicator.recv("content", function (type, data) {
+	/*PeerFactCommunicator.recv("content", function (type, data) {
 		switch (type) {
 			case "oauth":
 				//Got oauth token credentials! -- set up firebase with credentials
@@ -32,8 +31,8 @@ var backendErrors = 0;
 
 				break;
 		}
-	});
-	
+	});*/
+
 	//Find all relavent DOM elements in a newly-inserted node
 	function domNodeInserted (e) {
 		//Shut off the service if we are getting too many errors
@@ -54,7 +53,7 @@ var backendErrors = 0;
 			}
 		});
 	}
-	
+
 	//Watch for DOM changes
 	new MutationObserver (function (records) {
 		for (var i = 0; i < records.length; i++) {

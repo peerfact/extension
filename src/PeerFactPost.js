@@ -60,13 +60,13 @@ PeerFactPost.prototype.styleIt = function () {
 	//Event listeners
 	this.$expandLabel.on("click", function (e) {
 		e.preventDefault();
-		
+
 		self.$peerfactRoot.toggleClass("peerfact-box-details-open");
 		self._updateExpandLabel();
 	});
 	this.$peerfactRoot.on("click", ".peerfact-btn", function (e) {
 		e.preventDefault();
-		
+
 		var val = self.$proofUrl.val();
 		self.$proofUrl.val("");
 		var type = $(e.currentTarget).data("type");
@@ -78,21 +78,11 @@ PeerFactPost.prototype.styleIt = function () {
 			self.$proofError.text("");
 		}
 
-		if (authData != null) {
-			//Already authed -- send the data
-			self.data.updateMyVote(type, val).then(function () {
-				self.updateData();
-			});
-		} else {
-			//Need to authenticate
-			console.log("Not authenticated. Popping up an auth window...");
-			self.data.doAuth().then(function () {
-				return self.data.updateMyVote(type, val);
-			}).then(function () {
-				self.updateData();
-			});
-		}
-		
+		//Update on the server
+		self.data.updateMyVote(type, val).then(function () {
+			self.updateData();
+		});
+
 		//Send to the injected script
 		if (self.$commentCheckbox.prop("checked") && val) {
 			var commentText = "";
