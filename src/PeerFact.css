@@ -1,14 +1,17 @@
 .peerfact-fact, .peerfact-fact > * {
-	background: rgb(171, 255, 186) !important;
-}
-.peerfact-fiction, .peerfact-fiction > * {
-	background: rgb(255, 173, 173) !important;
+	background: #F0F4C3 !important;
 }
 .peerfact-misleading, .peerfact-misleading > * {
-	background: #FFF9AD !important;
+	background: #FFF9C4 !important;
+}
+.peerfact-fiction, .peerfact-fiction > * {
+	background: #FFCDD2 !important;
 }
 .peerfact-sponsored, .peerfact-sponsored > * {
-	background: #FFCA7B !important;
+	background: #FFE0B2 !important;
+}
+.peerfact-questionable, .peerfact-questionable > * {
+	background: #E1BEE7 !important;
 }
 
 .peerfact-box {
@@ -33,25 +36,13 @@
 	box-sizing: border-box;
 	padding: 7px 5px;
 }
-.peerfact-btn  {
+.peerfact-btn, .peerfact-auto-btn {
 	box-sizing: border-box;
 	display: inline-block;
 	width: 33%;
 	padding: 16px 0;
 	text-align: center;
 	border: solid 1px #333;
-}
-.peerfact-btn-fact  {
-	background: rgb(171, 255, 186);
-}
-.peerfact-btn-fiction  {
-	background: rgb(255, 173, 173);
-}
-.peerfact-btn-misleading  {
-	background: #FFF9AD;
-}
-.peerfact-btn-sponsored {
-	background: #FFCA7B;
 }
 .peerfact-checkbox {
 	display: block;
@@ -66,4 +57,7 @@
 }
 .peerfact-proof-error {
 	color: red;
+}
+.peerfact-auto {
+	margin-bottom: 40px;
 }

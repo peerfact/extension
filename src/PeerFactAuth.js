@@ -4,7 +4,6 @@
 
 var __pfAuthToken = null;
 chrome.storage.sync.get('__pfAuthToken', function (items) {
-    console.log(items);
     if (items.__pfAuthToken == null) {
         __pfAuthToken = ((Math.random()*1e3)|0).toString() + "73198" + ((Math.random()*1e3)|0).toString();
         chrome.storage.sync.set({ '__pfAuthToken': __pfAuthToken });

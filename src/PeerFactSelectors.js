@@ -55,7 +55,7 @@ var PeerFactSelectors = {
 					}
 				}
 			}
-		};
+		}
 
 		//Next check for common id params
 		var possiblePostidKeys = [
@@ -65,10 +65,36 @@ var PeerFactSelectors = {
 		];
 		var data = $root.data("ft");
 		for (var i = 0; i < possiblePostidKeys.length; i++) {
-			if (data[possiblePostidKeys[i]] != null) return data[possiblePostidKeys[i]]; 
+			if (data[possiblePostidKeys[i]] != null) return data[possiblePostidKeys[i]];
 		}
 
 		return null;
+	},
+
+	/**
+	 * Return an image URL if it is eligable for auto-detect. Otherwise null.
+	 */
+	getAutoDetectImage: function ($root) {
+		//Only care about shared photos
+		/*var anchors = $root.find("a");
+		for (var i = 0; i < anchors.length; i++) {
+			var $anchor = $(anchors.get(i));
+			var href = $anchor.attr("href");
+			if (href) {
+				var regexs = [
+					/\/photos\/[^\/]+\/([0-9]+)\//
+				];
+				for (var o = 0; o < regexs.length; o++) {
+					var matches = href.match(regexs[o]);
+					var $img = $anchor.find("img");
+					if (matches != null && $img.length > 0) {
+						return $img.attr("src");
+					}
+				}
+			}
+		}*/
+
+		return $root.find("a[ajaxify] img").attr("src");
 	}
 
 };

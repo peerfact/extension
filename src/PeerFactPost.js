@@ -8,14 +8,19 @@ function PeerFactPost ($root, data) {
 }
 
 PeerFactPost.prototype.updateData = function (data) {
+	var self = this;
 	if (data != null) this.data = data;
 
 	if (this.data != null && this.hasBeenStyled()) {
 		//Do coloring
-		this.$root.removeClass("peerfact-fact peerfact-fiction peerfact-misleading peerfact-sponsored");
+		PeerFactTypes.forEach(function (type) {
+			self.$root.removeClass("peerfact-" + type.name);
+		});
 		var summary = this.data.getPostSummary();
 		if (summary.votes > 0) {
 			this.$root.addClass("peerfact-" + summary.type);
+		} else if (this.data.auto != null) {
+			this.$root.addClass("peerfact-" + this.data.auto.type);
 		}
 
 		//Do collapse text update
@@ -25,13 +30,40 @@ PeerFactPost.prototype.updateData = function (data) {
 		var bestProof = this.data.getBestProof();
 		if (bestProof != null) this.$bestProof.html('<p>Best Proof: <a target="_blank" href="' + PeerFactPostData.formatUrl(bestProof, summary.type) + '">' + PeerFactPostData.formatUrl(bestProof, summary.type) + '</a></p>');
 		else this.$bestProof.empty();
+
+		if (this.data.auto != null) {
+			this.$autoDetect.hide();
+			this.$autoDetectResult.html('<a href="' + this.data.auto.url + '" target="_blank">' + this.data.auto.proof + '</a>' + '<br><br><a href="#" class="peerfact-auto-share">Share this Result</a>');
+			this.$autoDetectResult.find(".peerfact-auto-share").on('click', function (e) {
+				e.preventDefault();
+
+				//Update on the server
+				if (self.data.auto.type != null) {
+					self.data.updateMyVote(self.data.auto.type, self.data.auto.url).then(function () {
+						self.updateData();
+					});
+				}
+
+				PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:self.data.auto.proof + " " + PeerFactPostData.formatUrl(self.data.auto.url, self.data.auto.type) });
+			});
+		}
 	}
 };
 
 PeerFactPost.prototype._updateExpandLabel = function () {
 	var summary = this.data.getPostSummary();
 	var collapse = this.$peerfactRoot.hasClass("peerfact-box-details-open");
-	this.$expandLabel.text("PeerFact (" + summary.fact + " fact, " + summary.misleading + " misleading, " + summary.fiction + " fiction, " + summary.sponsored + " sponsored, " + summary.votes + " vote" + (summary.votes > 1 ? "s" : "") + ") [" + (collapse ? "-" : "+") + "]");
+	var brackets = PeerFactTypes
+		.filter(function (type) { return summary[type.name] !== 0; })
+		.map(function (type) { return summary[type.name] + " " + type.label; })
+		.join(", ");
+	brackets = (brackets != "" ? (brackets + ", ") : "") + summary.votes + " vote" + (summary.votes !== 1 ? "s" : "");
+	if (this.data.auto != null) {
+		//No votes, but we have an auto-detect
+		if (summary.votes === 0) brackets = "automatically detected as " + this.data.auto.type;
+		else brackets += ", automatically detected as " + this.data.auto.type;
+	}
+	this.$expandLabel.text("PeerFact (" + brackets + ") [" + (collapse ? "-" : "+") + "]");
 };
 
 PeerFactPost.prototype.hasBeenStyled = function () {
@@ -49,13 +81,17 @@ PeerFactPost.prototype.styleIt = function () {
 	this.$root.addClass("peerfact-post");
 
 	//Main styling and add in all important element references
-	this.$insertionPoint.after('<div class="peerfact-box"><div><a href="#" class="peerfact-expand">PeerFact [+]</a></div><div class="peerfact-details"><div class="peerfact-best-proof"></div><input placeholder="Paste Proof Link (Optional.. but recommended)" class="peerfact-reason"><div class="peerfact-proof-error"></div><label class="peerfact-checkbox"><input type="checkbox" checked="checked"> Post Proof to Comments</label><div class="peerfact-btns"><a href="#" class="peerfact-btn peerfact-btn-fact" data-type="fact">Factual</a><a href="#" class="peerfact-btn peerfact-btn-misleading" data-type="misleading">Misleading</a><a href="#" class="peerfact-btn peerfact-btn-fiction" data-type="fiction">Fictional</a><a href="#" class="peerfact-btn peerfact-btn-sponsored" data-type="sponsored">Sponsored Content</a></div><div class="peerfact-footer"><a href="http://www.peerfact.xyz/" target="_blank">PeerFact</a> is designed to combat the misinformation present all over social media. The service becomes stronger the more people use it, so please spread the word!<br><br><b>Types of Content</b><br><br><b>Fact</b> The post is factual. All information is completely correct.<br><br><b>Misleading</b> The post is technically correct, but is inferring something that is not factual. For example, nitpicking a dataset to prove some larger issue.<br><br><b>Fiction</b> The post is false.<br><br><b>Sponsored Content</b> The post is content that has been paid for by a company to promote a product or service.<br><br>PeerFact is 3rd party software and is not associated with Facebook in any way. This is an early version so expect more features in the near future!</div></div></div>');
+	var btns = PeerFactTypes.map(function (type) { return '<a href="#" class="peerfact-btn peerfact-' + type.name + '" data-type="' + type.name + '">' + type.label + '</a>'; }).join("");
+	var descs = PeerFactTypes.map(function (type) { return '<b>' + type.label + '</b> ' + type.description; }).join("<br/><br/>");
+	this.$insertionPoint.after('<div class="peerfact-box"><div><a href="#" class="peerfact-expand">PeerFact [+]</a></div><div class="peerfact-details"><div class="peerfact-best-proof"></div><div class="peerfact-auto"><p><b>PeerFact Auto (Experimental)</b></p><p>Automatically detect whether the post is fact or fiction.</p><a href="#" class="peerfact-auto-btn">Auto-detect</a><div class="peerfact-auto-result"></div></div><p><b>PeerFact Voting</b></p><input placeholder="Paste Proof Link (Optional.. but recommended)" class="peerfact-reason"><div class="peerfact-proof-error"></div><label class="peerfact-checkbox"><input type="checkbox" checked="checked"> Post Proof to Comments</label><div class="peerfact-btns">' + btns + '</div><div class="peerfact-footer"><a href="http://www.peerfact.xyz/" target="_blank">PeerFact</a> is designed to combat the misinformation present all over social media. The service becomes stronger the more people use it, so please spread the word!<br><br><b>Types of Content</b><br><br>' + descs + '<br><br>PeerFact is 3rd party software and is not associated with Facebook in any way. This is an early version so expect more features in the near future!</div></div></div>');
 	this.$peerfactRoot = this.$root.find(".peerfact-box");
 	this.$expandLabel = this.$root.find(".peerfact-expand");
 	this.$bestProof = this.$root.find(".peerfact-best-proof");
 	this.$proofUrl = this.$root.find(".peerfact-reason");
 	this.$commentCheckbox = this.$root.find(".peerfact-checkbox input");
 	this.$proofError = this.$root.find(".peerfact-proof-error");
+	this.$autoDetect = this.$root.find(".peerfact-auto-btn");
+	this.$autoDetectResult = this.$root.find(".peerfact-auto-result");
 
 	//Event listeners
 	this.$expandLabel.on("click", function (e) {
@@ -87,12 +123,23 @@ PeerFactPost.prototype.styleIt = function () {
 		if (self.$commentCheckbox.prop("checked") && val) {
 			var commentText = "";
 			switch (type) {
-				case "fact": commentText = "Post marked as FACT by PeerFact. Link to proof: "; break;
-				case "misleading": commentText = "Post marked as MISLEADING by PeerFact. Link to explanation: "; break;
-				case "fiction": commentText = "Post marked as FICTION by PeerFact. Link to proof: "; break;
+				case "fact": commentText = "This is correct. Proof: "; break;
+				case "misleading": commentText = "This post is misleading. Link to explanation: "; break;
+				case "fiction": commentText = "This post is false. Proof: "; break;
+				case "sponsored": commentText = "This is sponsored content. Proof: "; break;
+				case "questionable": commentText = "This post is questionable. Proof: "; break;
 			}
 
 			PeerFactCommunicator.send("facebook", "comment", { postid:self.getPostId(), text:commentText + PeerFactPostData.formatUrl(val, type) });
+		}
+	});
+	this.$autoDetect.on("click", function (e) {
+		//If this is a auto-detect candidate post and there are no human results then check it using automatic checker
+		var imageUrl = PeerFactSelectors.getAutoDetectImage(self.$root);
+		if (imageUrl != null && self.data.auto == null) {
+			self.data.checkAuto(imageUrl).then(function () {
+				self.updateData();
+			});
 		}
 	});
 

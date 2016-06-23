@@ -1,3 +1,31 @@
+var PeerFactTypes = [
+	{
+		name:'fact',
+		label: 'Fact',
+		description: 'The post is factual. All information is completely correct.'
+	},
+	{
+		name:'misleading',
+		label: 'Misleading',
+		description: 'The post is technically correct, but is inferring something that is not factual. For example, nitpicking a dataset to prove some larger issue.'
+	},
+	{
+		name:'fiction',
+		label: 'Fiction',
+		description: 'The post is false.'
+	},
+	{
+		name:'sponsored',
+		label: 'Sponsored Content',
+		description: 'The post is content that has been paid for by a company to promote a product or service.'
+	},
+	{
+		name:'questionable',
+		label: 'Questionable',
+		description: 'The post has questionable content, but you don\'t have enough information to say one way or another.'
+	}
+];
+
 function PeerFactPostData (data) {
 	this.postid = data.postid;
 	if (data.votes != null) this.votes = data.votes;
@@ -5,7 +33,10 @@ function PeerFactPostData (data) {
 }
 
 PeerFactPostData.prototype.getPostSummary = function () {
-	var summary = { votes: 0, fact: 0, fiction: 0, misleading: 0, sponsored: 0, type: null };
+	var summary = { votes: 0, type: null };
+	PeerFactTypes.forEach(function (type) {
+		summary[type.name] = 0;
+	});
 	for (var i in this.votes) {
 		var vote = this.votes[i];
 
@@ -74,6 +105,16 @@ PeerFactPostData.prototype.updateMyVote = function (type, proof) {
 		});
 	}
 };
+
+/**
+ * Check if this post can be auto-classified.
+ */
+PeerFactPostData.prototype.checkAuto = function (imageUrl) {
+	var self = this;
+	return PeerFactAuto.checkImage(this.postid, imageUrl).then(function (data) {
+		self.auto = data;
+	});
+}
 
 /**
  * Fetch PeerFact data from a postid. This is a common request. Do lots of caching behind a CDN because this is a very common request.
