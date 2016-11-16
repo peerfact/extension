@@ -1,17 +1,5 @@
-.peerfact-fact, .peerfact-fact > * {
-	background: #F0F4C3 !important;
-}
-.peerfact-misleading, .peerfact-misleading > * {
-	background: #FFF9C4 !important;
-}
-.peerfact-fiction, .peerfact-fiction > * {
+.peerfact-fakenews, .peerfact-fakenews > * {
 	background: #FFCDD2 !important;
-}
-.peerfact-sponsored, .peerfact-sponsored > * {
-	background: #FFE0B2 !important;
-}
-.peerfact-questionable, .peerfact-questionable > * {
-	background: #E1BEE7 !important;
 }
 
 .peerfact-box {
