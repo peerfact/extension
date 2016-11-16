@@ -3,49 +3,17 @@
 }
 
 .peerfact-box {
-	margin: 12px 12px -12px 12px;
-	border-top: 1px solid #e5e5e5;
-	text-align: right;
+	background: url(https://www.peerfact.xyz/img/favicon-32x32.png) no-repeat 10px 10px !important;
+    font-size: 1.2em;
+    padding: 8px 8px 8px 50px;
+    box-sizing: border-box;
+	border-bottom: solid 1px #e9ebee;
 }
-.peerfact-expand {
-	padding: 6px 0;
-	display: block;
+.peerfact-warning {
+	color: #F44336;
+	font-weight: bold;
 }
-.peerfact-details {
-	display: none;
-	text-align: left;
-}
-.peerfact-box-details-open.peerfact-box .peerfact-details {
-	display: block;
-}
-.peerfact-box .peerfact-reason {
-	width: 100%;
-	display: block;
-	box-sizing: border-box;
-	padding: 7px 5px;
-}
-.peerfact-btn, .peerfact-auto-btn {
-	box-sizing: border-box;
+.peerfact-link-button {
 	display: inline-block;
-	width: 33%;
-	padding: 16px 0;
-	text-align: center;
-	border: solid 1px #333;
-}
-.peerfact-checkbox {
-	display: block;
-	margin: 10px 0;
-}
-.peerfact-checkbox input {
-	cursor: pointer;
-	margin-top: 1px;
-}
-.peerfact-footer {
-	padding: 8px 0;
-}
-.peerfact-proof-error {
-	color: red;
-}
-.peerfact-auto {
-	margin-bottom: 40px;
+	margin-right: 10px;
 }

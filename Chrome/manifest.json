@@ -3,8 +3,8 @@
 
 	"name": "PeerFact",
 	"description": "Check It before you Rep It!",
-	"version": "0.2.0",
-	"content_security_policy": "script-src 'self' https://cdn.firebase.com https://*.firebaseio.com https://d15m3c3cf3s94d.cloudfront.net; object-src 'self'",
+	"version": "0.3.0",
+	"content_security_policy": "script-src 'self' https://www.peerfact.xyz; object-src 'self'",
 
 	"icons": {
 		"16": "icon16.png",
@@ -14,15 +14,12 @@
 
 	"web_accessible_resources": [
 		"PeerFactInjected.js",
-		"firebase.js",
 		"PeerFactCommunicator.js",
 		"jquery.js"
 	],
 
 	"permissions": [
-		"*://auth.firebase.com/*",
-		"storage",
-		"*://www.snopes.com/*"
+		"storage"
 	],
 
 	"background": {
@@ -41,11 +38,7 @@
 				"url.js",
 				"fetch.js",
 				"PeerFactPost.js",
-				"PeerFactPostData.js",
-				"PeerFactSelectors.js",
 				"PeerFactCommunicator.js",
-				"PeerFactAuth.js",
-				"PeerFactAuto.js",
 				"PeerFact.js"
 			]
 		}

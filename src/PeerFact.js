@@ -6,11 +6,8 @@ injectJs(chrome.extension.getURL('PeerFactInjected.js'));
 function init (manifest) {
 	//Find all relavent DOM elements in a newly-inserted node
 	function domNodeInserted (e) {
-		//Shut off the service if we are getting too many errors
-		if (backendErrors >= 10) return;
-
 		//Find all candidates
-		$(e).find(PeerFactSelectors.getRootSelector()).each(function () {
+		$(e).find(manifest.postSelector).each(function () {
 			var post = new PeerFactPost($(this), manifest);
 			post.refresh();
 		});
