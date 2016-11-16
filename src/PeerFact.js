@@ -34,6 +34,6 @@ function init (manifest) {
 }
 
 //First fetch the root info
-fetch('http://www.peerfact.xyz/hosts.json').then(function (res) {
+fetch('https://www.peerfact.xyz/hosts.json').then(function (res) {
 	return res.json();
 }).then(init);
