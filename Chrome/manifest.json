@@ -3,7 +3,7 @@
 
 	"name": "PeerFact",
 	"description": "Check It before you Rep It!",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"content_security_policy": "script-src 'self' https://www.peerfact.xyz; object-src 'self'",
 
 	"icons": {
@@ -33,7 +33,6 @@
 			"js": [
 				"jquery.js",
 				"promise.js",
-				"firebase.js",
 				"inject.js",
 				"url.js",
 				"fetch.js",
