@@ -1,6 +1,9 @@
 .peerfact-fakenews, .peerfact-fakenews > * {
 	background: #FFCDD2 !important;
 }
+.peerfact-satire, .peerfact-satire > * {
+	background: #FFF8B8 !important;
+}
 
 .peerfact-box {
 	background: url(https://www.peerfact.xyz/img/favicon-32x32.png) no-repeat 10px 10px !important;
@@ -9,7 +12,7 @@
     box-sizing: border-box;
 	border-bottom: solid 1px #e9ebee;
 }
-.peerfact-warning {
+.peerfact-fakenews .peerfact-description {
 	color: #F44336;
 	font-weight: bold;
 }

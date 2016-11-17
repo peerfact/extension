@@ -3,7 +3,7 @@
 
 	"name": "PeerFact",
 	"description": "Check It before you Rep It!",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"content_security_policy": "script-src 'self' https://www.peerfact.xyz; object-src 'self'",
 
 	"icons": {
